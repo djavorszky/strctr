@@ -26,12 +26,19 @@ where
 
 impl<T, const N: usize> Array<T, N>
 where
-    T: Default + Copy,
+    T: Copy + Default,
 {
-    /// Constructs a new Array of types T and size N
+    /// Constructs a new Array of types T and size N, using the default trait call
     pub fn new() -> Self {
+        Self::new_with_default(T::default())
+    }
+}
+
+impl<T: Copy, const N: usize> Array<T, N> {
+    /// Constructs a new Array of types T and size N, using the provided default value.
+    pub fn new_with_default(def: T) -> Self {
         Self {
-            elements: [T::default(); N],
+            elements: [def; N],
             cursor: 0,
         }
     }
@@ -135,7 +142,7 @@ where
 
 impl<T, const N: usize> Index<usize> for Array<T, N>
 where
-    T: Default + Copy,
+    T: Copy,
 {
     type Output = T;
 
@@ -169,7 +176,7 @@ where
 
 impl<T, const N: usize> IndexMut<usize> for Array<T, N>
 where
-    T: Default + Copy,
+    T: Copy,
 {
     /// Allows updating the values within the array.
     /// ```
